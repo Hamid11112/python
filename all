@@ -1,0 +1,43 @@
+# save as make_student_pdf.py
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+
+def create_student_pdf(name: str, roll: str, filepath: str = "student_info.pdf"):
+    """
+    Create a one-page PDF that displays the student's name and roll number,
+    centered on an A4 page.
+    """
+    width, height = A4
+    c = canvas.Canvas(filepath, pagesize=A4)
+
+    # Title
+    title_text = "Student Information"
+    c.setFont("Helvetica-Bold", 28)
+    title_w = c.stringWidth(title_text, "Helvetica-Bold", 28)
+    c.drawString((width - title_w) / 2, height - 140, title_text)
+
+    # Name
+    c.setFont("Helvetica", 22)
+    name_text = f"Name: {name}"
+    name_w = c.stringWidth(name_text, "Helvetica", 22)
+    c.drawString((width - name_w) / 2, height - 220, name_text)
+
+    # Roll number
+    roll_text = f"Roll Number: {roll}"
+    roll_w = c.stringWidth(roll_text, "Helvetica", 22)
+    c.drawString((width - roll_w) / 2, height - 260, roll_text)
+
+    # Optional: small footer
+    c.setFont("Helvetica-Oblique", 10)
+    footer = "Generated with ReportLab"
+    footer_w = c.stringWidth(footer, "Helvetica-Oblique", 10)
+    c.drawString((width - footer_w) / 2, 30, footer)
+
+    c.showPage()
+    c.save()
+    return filepath
+
+if __name__ == "__main__":
+    # Change these if you want different values
+    filename = create_student_pdf(name="Hamid", roll="1223", filepath="student_info.pdf")
+    print(f"PDF written to: {filename}")
